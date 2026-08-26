@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sua confeitaria artesanal de bolos e doces gourmet. Peça online com entrega rápida!">
+    <title>Doce Encanto | Confeitaria & Doces Gourmet</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================
+           1. VARIÁVEIS DE DESIGN E RESET
+           ========================================== */
+        :root {
+            --primary-pink: #d81b60;
+            --soft-pink: #fce4ec;
+            --accent-pink: #f48fb1;
+            --primary-purple: #4a148c;
+            --soft-purple: #f3e5f5;
+            --dark-purple: #2c003e;
+            --text-color: #333333;
+            --bg-light: #fefefe;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 5px 15px rgba(0,0,0,0.12);
+            --shadow-lg: 0 10px 25px rgba(74, 20, 140, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ==========================================
+           2. HEADER E NAVEGAÇÃO FIXA
+           ========================================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .header.scroll-down {
+            transform: translateY(-100%);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--primary-pink);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-pink);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-pink);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-icon-wrapper {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.4rem;
+            color: var(--primary-purple);
+            transition: var(--transition);
+        }
+
+        .cart-icon-wrapper:hover {
+            color: var(--primary-pink);
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--primary-pink);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==========================================
+           3. BANNER PRINCIPAL (CARROSSEL)
+           ========================================== */
+        .hero {
+            margin-top: 75px;
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            background: var(--soft-purple);
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(74,20,140,0.7) 0%, rgba(216,27,96,0.3) 100%);
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--white);
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .slide-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .slide-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary-pink);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background: #b0124a;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.4);
+            color: var(--dark-purple);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        .carousel-arrow:hover {
+            background: var(--white);
+            color: var(--primary-pink);
+        }
+
+        .prev-slide { left: 20px; }
+        .next-slide { right: 20px; }
+
+        /* ==========================================
+           4. CATÁLOGO E FILTROS
+           ========================================== */
+        .catalog-container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-purple);
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 5px rgba(216,27,96,0.3);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-controls select {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            background: var(--white);
+            cursor: pointer;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .product-img-wrapper {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.08);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary-purple);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            color: var(--dark-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .product-rating {
+            color: #ffc107;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .btn-add-cart {
+            background: var(--soft-pink);
+            color: var(--primary-pink);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-add-cart:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+        }
+
+        /* ==========================================
+           5. CARRINHO LATERAL (DRAWER)
+           ========================================== */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 380px;
+            height: 100%;
+            background: var(--white);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            z-index: 1001;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-drawer.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            background: var(--primary-purple);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .cart-item-price {
+            color: var(--primary-pink);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .qty-btn {
+            background: #eee;
+            border: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            background: var(--soft-purple);
+            border-top: 1px solid #ddd;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-purple);
+        }
+
+        /* ==========================================
+           6. MODAIS (CHECKOUT E POPUP)
+           ========================================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: translateY(-20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-pink);
+        }
+
+        /* ==========================================
+           7. FOOTER & COMPONENTES ADICIONAIS
+           ========================================== */
+        .footer {
+            background: var(--dark-purple);
+            color: var(--white);
+            padding: 4rem 2rem 1rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            margin-bottom: 1.2rem;
+            color: var(--accent-pink);
+        }
+
+        .footer-col p, .footer-col a {
+            color: #ddd;
+            text-decoration: none;
+            margin-bottom: 0.6rem;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-pink);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-pink);
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-pink);
+            color: var(--white);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Notificações Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: var(--dark-purple);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-pink);
+            box-shadow: var(--shadow-md);
+            animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(-100%); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .slide-content h1 { font-size: 2rem; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="#" class="logo"><i class="fa-solid fa-cake-candles"></i> Doce Encanto</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link active">Início</a></li>
+                    <li><a href="#produtos" class="nav-link">Produtos</a></li>
+                    <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                    <li><a href="#contato" class="nav-link">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <div class="cart-icon-wrapper" id="open-cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-badge" id="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <button class="carousel-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="carousel-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+
+        <div class="carousel-slide active" style="background-image: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Bolos Artesanais Feitos com Amor</h1>
+                <p>Descubra nossa linha Premium para tornar seu dia inesquecível.</p>
+                <a href="#produtos" class="btn btn-primary">Ver Catálogo</a>
+            </div>
+        </div>
+
+        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=1200&q=80');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Doces Finos & Cupcakes Gourmet</h1>
+                <p>O toque de sofisticação que seu evento precisa.</p>
+                <a href="#produtos" class="btn btn-primary">Aproveitar Ofertas</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="catalog-container" id="produtos">
+        <div class="section-title">
+            <h2>Nossos Doces Tentações</h2>
+            <p>Selecione suas preferências e monte seu pedido online</p>
+        </div>
+
+        <div class="filter-bar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Buscar bolo, cupcake, brigadeiro...">
+            </div>
+            <div class="filter-controls">
+                <select id="category-filter">
+                    <option value="todos">Todas as Categorias</option>
+                    <option value="bolos">Bolos</option>
+                    <option value="docinhos">Docinhos</option>
+                    <option value="tortas">Tortas</option>
+                </select>
+                <select id="sort-filter">
+                    <option value="relevancia">Mais Populares</option>
+                    <option value="preco-menor">Menor Preço</option>
+                    <option value="preco-maior">Maior Preço</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="products-grid" id="products-grid">
+            </div>
+    </main>
+
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Seu Carrinho</h3>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-value">R$ 0,00</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" id="checkout-btn">Finalizar Compra</button>
+        </div>
+    </aside>
+
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-checkout">&times;</button>
+            <h2 style="color: var(--primary-purple); margin-bottom: 1rem;">Finalizar Pedido</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input type="text" id="name" required placeholder="Digite seu nome">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="address">Endereço de Entrega</label>
+                    <input type="text" id="address" required placeholder="Rua, Número, Bairro">
+                </div>
+                <div class="form-group">
+                    <label for="payment">Forma de Pagamento</label>
+                    <select id="payment" required>
+                        <option value="pix">PIX (5% de desconto)</option>
+                        <option value="credit">Cartão de Crédito</option>
+                        <option value="delivery">Pagamento na Entrega</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Confirmar e Pagar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="promo-modal">
+        <div class="modal-content" style="text-align: center;">
+            <button class="close-modal" id="close-promo">&times;</button>
+            <i class="fa-solid fa-gift" style="font-size: 3rem; color: var(--primary-pink); margin-bottom: 1rem;"></i>
+            <h2 style="color: var(--primary-purple);">Ganhe 10% OFF!</h2>
+            <p style="margin: 1rem 0;">Use o cupom <strong>DOCE10</strong> na sua primeira compra de doces gourmet.</p>
+            <button class="btn btn-primary" id="btn-claim-coupon">Garantir Desconto</button>
+        </div>
+    </div>
+
+    <footer class="footer" id="contato">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Doce Encanto</h3>
+                <p>Transformando momentos simples em memórias inesquecíveis através da alta confeitaria.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Contato</h3>
+                <p><i class="fa-solid fa-phone"></i> (11) 99999-8888</p>
+                <p><i class="fa-solid fa-envelope"></i> contato@doceencanto.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Mogi das Cruzes - SP</p>
+            </div>
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Receba novidades e promoções exclusivas:</p>
+                <form id="newsletter-form" style="margin-top: 0.5rem;">
+                    <input type="email" placeholder="Seu e-mail" required style="padding: 0.5rem; border-radius: 4px; border: none; width: 100%; margin-bottom: 0.5rem;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Inscrever</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 Doce Encanto Confeitaria. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <div class="back-to-top" id="backToTop"><i class="fa-solid fa-arrow-up"></i></div>
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        /* ------------------------------------------
+           1. BASE DE DADOS DE PRODUTOS (MOCK)
+           ------------------------------------------ */
+        const productsDatabase = [
+            {
+                id: 1,
+                name: "Bolo Red Velvet Premium",
+                category: "bolos",
+                price: 120.00,
+                rating: 5,
+                popular: 10,
+                badge: "Mais Vendido",
+                image: "https://images.unsplash.com/photo-1586788680434-30d324b2d46f?auto=format&fit=crop&w=600&q=80",
+                description: "Massa aveludada com recheio tradicional de cream cheese e frutas vermelhas."
+            },
+            {
+                id: 2,
+                name: "Caixa Brigadeiros Gourmet (12un)",
+                category: "docinhos",
+                price: 45.00,
+                rating: 5,
+                popular: 8,
+                badge: "Destaque",
+                image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80",
+                description: "Variedade de sabores: ao leite, pistache, nozes e belga intenso."
+            },
+            {
+                id: 3,
+                name: "Torta de Limão Siciliano",
+                category: "tortas",
+                price: 85.00,
+                rating: 4,
+                popular: 6,
+                badge: "Refrescante",
+                image: "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=600&q=80",
+                description: "Base crocante de biscoito, creme leve de limão e merengue tostado."
+            },
+            {
+                id: 4,
+                name: "Bolo Trufado de Chocolate",
+                category: "bolos",
+                price: 110.00,
+                rating: 5,
+                popular: 9,
+                badge: "Novo",
+                image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80",
+                description: "Massa 70% cacau com ganache intensa e raspas de chocolate nobre."
+            }
+        ];
+
+        /* Estado da Aplicação */
+        let cart = [];
+
+        /* ------------------------------------------
+           2. INICIALIZAÇÃO E EVENTOS
+           ------------------------------------------ */
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(productsDatabase);
+            initCarousel();
+            initHeaderScroll();
+            initPromoModal();
+        });
+
+        /* ------------------------------------------
+           3. RENDERIZAÇÃO E FILTROS DO CATÁLOGO
+           ------------------------------------------ */
+        const productsGrid = document.getElementById('products-grid');
+        const searchInput = document.getElementById('search-input');
+        const categoryFilter = document.getElementById('category-filter');
+        const sortFilter = document.getElementById('sort-filter');
+
+        function renderProducts(products) {
+            productsGrid.innerHTML = '';
+            
+            if(products.length === 0) {
+                productsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888;">Nenhum produto encontrado.</p>`;
+                return;
+            }
+
+            products.forEach(product => {
+                const stars = '<i class="fa-solid fa-star"></i>'.repeat(product.rating);
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-img-wrapper">
+                        <span class="product-badge">${product.badge}</span>
+                        <img src="${product.image}" alt="${product.name}" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-rating">${stars}</div>
+                        <div class="product-footer">
+                            <span class="product-price">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
+                            <button class="btn-add-cart" onclick="addToCart(${product.id})" title="Adicionar ao carrinho">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productsGrid.appendChild(card);
+            });
+        }
+
+        /* Lógica de Filtro e Busca Instantânea */
+        function filterProducts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+            const sort = sortFilter.value;
+
+            let filtered = productsDatabase.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'todos' || p.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            if (sort === 'preco-menor') filtered.sort((a, b) => a.price - b.price);
+            if (sort === 'preco-maior') filtered.sort((a, b) => b.price - a.price);
+            if (sort === 'relevancia') filtered.sort((a, b) => b.popular - a.popular);
+
+            renderProducts(filtered);
+        }
+
+        searchInput.addEventListener('input', filterProducts);
+        categoryFilter.addEventListener('change', filterProducts);
+        sortFilter.addEventListener('change', filterProducts);
+
+        /* ------------------------------------------
+           4. GERENCIAMENTO DO CARRINHO DE COMPRAS
+           ------------------------------------------ */
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartCountEl = document.getElementById('cart-count');
+        const cartTotalEl = document.getElementById('cart-total-value');
+
+        document.getElementById('open-cart').addEventListener('click', () => cartDrawer.classList.add('open'));
+        document.getElementById('close-cart').addEventListener('click', () => cartDrawer.classList.remove('open'));
+
+        function addToCart(productId) {
+            const product = productsDatabase.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`${product.name} foi adicionado ao carrinho!`);
+        }
+
+        function updateCartQuantity(id, delta) {
+            const item = cart.find(p => p.id === id);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(p => p.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                count += item.quantity;
+
+                const itemEl = document.createElement('div');
+                itemEl.className = 'cart-item';
+                itemEl.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="updateCartQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateCartQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemEl);
+            });
+
+            cartCountEl.textContent = count;
+            cartTotalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        /* ------------------------------------------
+           5. CHECKOUT E MODAIS
+           ------------------------------------------ */
+        const checkoutModal = document.getElementById('checkout-modal');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const closeCheckout = document.getElementById('close-checkout');
+        const checkoutForm = document.getElementById('checkout-form');
+
+        checkoutBtn.addEventListener('click', () => {
+            if(cart.length === 0) {
+                showToast("Seu carrinho está vazio!");
+                return;
+            }
+            cartDrawer.classList.remove('open');
+            checkoutModal.classList.add('open');
+        });
+
+        closeCheckout.addEventListener('click', () => checkoutModal.classList.remove('open'));
+
+        checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast("Pedido efetuado com sucesso! Obrigado pela preferência.");
+            cart = [];
+            updateCartUI();
+            checkoutModal.classList.remove('open');
+            checkoutForm.reset();
+        });
+
+        /* Popup Promocional */
+        function initPromoModal() {
+            const promoModal = document.getElementById('promo-modal');
+            setTimeout(() => {
+                promoModal.classList.add('open');
+            }, 3000);
+
+            document.getElementById('close-promo').addEventListener('click', () => promoModal.classList.remove('open'));
+            document.getElementById('btn-claim-coupon').addEventListener('click', () => {
+                showToast("Cupom DOCE10 copiado!");
+                promoModal.classList.remove('open');
+            });
+        }
+
+        /* ------------------------------------------
+           6. CARROSSEL DE BANNERS
+           ------------------------------------------ */
+        function initCarousel() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach(s => s.classList.remove('active'));
+                slides[index].classList.add('active');
+            }
+
+            document.querySelector('.next-slide').addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            });
+
+            document.querySelector('.prev-slide').addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            });
+
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }, 5000);
+        }
+
+        /* ------------------------------------------
+           7. UTILITÁRIOS (TOASTS, SCROLL & HEADER)
+           ------------------------------------------ */
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        /* Back to Top & Header Smart Hide */
+        const backToTop = document.getElementById('backToTop');
+        const header = document.getElementById('header');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.classList.add('scroll-down');
+            } else {
+                header.classList.remove('scroll-down');
+            }
+            lastScroll = currentScroll;
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
